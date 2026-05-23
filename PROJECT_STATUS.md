@@ -2,11 +2,11 @@
 
 ## Current State
 
-- Status: foundation ready
+- Status: Supabase-backed dashboard ready
 - Stack: Vite, HTML, CSS, vanilla JavaScript
-- Backend: none
+- Backend: Supabase public registry
 - Auth: none
-- Database: none
+- Database: Supabase Postgres for tool registry and routing events
 
 ## Working
 
@@ -16,6 +16,10 @@
 - Tool launch buttons
 - Maintenance disabled handling
 - Recently opened tracking through `localStorage`
+- Supabase primary tool loading
+- Static fallback from `src/tools-data.js`
+- Backend status chip
+- Routing event insert attempt on launch
 - Production build
 - Local Git repository and initial commit
 
@@ -23,11 +27,11 @@
 
 - Authentication
 - Server APIs
-- Database sync
 - External UI libraries
+- Role-based filtering in the frontend
 
 ## GitHub Status
 
-- Intended repository: `ryofficeics-pixel/ics-tools-hub`
-- Local remote: `https://github.com/ryofficeics-pixel/ics-tools-hub.git`
-- Push status: blocked until a GitHub repository can be created or a local GitHub credential/CLI token is available.
+- Repository: `ryofficeics-pixel/ICS-Hub`
+- Local remote: `https://github.com/ryofficeics-pixel/ICS-Hub.git`
+- Push status: active

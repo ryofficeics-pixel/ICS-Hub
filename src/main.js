@@ -1,5 +1,6 @@
 import "./styles.css";
 import { tools } from "./tools-data.js";
+import { supabase } from "./lib/supabase.js";
 
 const RECENT_KEY = "ics-tools-hub-recent";
 const searchInput = document.querySelector("#toolSearch");
@@ -8,10 +9,13 @@ const toolsGrid = document.querySelector("#toolsGrid");
 const emptyState = document.querySelector("#emptyState");
 const resultCount = document.querySelector("#resultCount");
 const recentTools = document.querySelector("#recentTools");
+const backendStatus = document.querySelector("#backendStatus");
 
-const categories = ["All", ...Array.from(new Set(tools.map((tool) => tool.category)))];
+let activeTools = tools;
+let categories = [];
 let activeCategory = "All";
 let query = "";
+let backendMode = "static";
 
 function getRecentIds() {
   try {
@@ -33,9 +37,9 @@ function normalize(value) {
 
 function filteredTools() {
   const search = normalize(query);
-  return tools.filter((tool) => {
+  return activeTools.filter((tool) => {
     const matchesCategory = activeCategory === "All" || tool.category === activeCategory;
-    const haystack = normalize([tool.name, tool.description, tool.category, tool.type, tool.status].join(" "));
+    const haystack = normalize([tool.name, tool.description, tool.category, tool.type, tool.status, ...(tool.aliases || [])].join(" "));
     return matchesCategory && (!search || haystack.includes(search));
   });
 }
@@ -74,10 +78,42 @@ function createToolCard(tool) {
     if (tool.disabled || !tool.url) return;
     saveRecent(tool.id);
     renderRecent();
+    logRoutingEvent(tool);
     window.open(tool.url, "_blank", "noopener,noreferrer");
   });
 
   return card;
+}
+
+async function logRoutingEvent(tool) {
+  if (!supabase || backendMode !== "online") return;
+  try {
+    const { error } = await supabase.from("routing_events").insert({
+      tool_id: tool.id,
+      tool_name: tool.name,
+      url: tool.url,
+      user_agent: navigator.userAgent
+    });
+    if (error) throw error;
+  } catch (error) {
+    console.warn("Routing event was not saved.", error);
+  }
+}
+
+function setBackendStatus(mode) {
+  backendMode = mode;
+  const labels = {
+    online: "Online DB",
+    static: "Static fallback",
+    error: "Backend error"
+  };
+  backendStatus.textContent = labels[mode] || labels.static;
+  backendStatus.dataset.mode = mode;
+}
+
+function updateCategories() {
+  categories = ["All", ...Array.from(new Set(activeTools.map((tool) => tool.category)))];
+  if (!categories.includes(activeCategory)) activeCategory = "All";
 }
 
 function renderFilters() {
@@ -105,7 +141,7 @@ function renderTools() {
 
 function renderRecent() {
   const recent = getRecentIds()
-    .map((id) => tools.find((tool) => tool.id === id))
+    .map((id) => activeTools.find((tool) => tool.id === id))
     .filter(Boolean);
 
   recentTools.replaceChildren();
@@ -125,6 +161,7 @@ function renderRecent() {
     button.addEventListener("click", () => {
       if (!tool.disabled && tool.url) {
         saveRecent(tool.id);
+        logRoutingEvent(tool);
         window.open(tool.url, "_blank", "noopener,noreferrer");
       }
     });
@@ -137,6 +174,49 @@ searchInput.addEventListener("input", (event) => {
   renderTools();
 });
 
-renderFilters();
-renderRecent();
-renderTools();
+function applyTools(nextTools, mode) {
+  activeTools = nextTools.length ? nextTools : tools;
+  setBackendStatus(mode);
+  updateCategories();
+  renderFilters();
+  renderRecent();
+  renderTools();
+}
+
+async function loadSupabaseTools() {
+  if (!supabase) {
+    applyTools(tools, "static");
+    return;
+  }
+
+  try {
+    const [{ data: dbTools, error: toolsError }, { data: aliases, error: aliasesError }] = await Promise.all([
+      supabase.from("tools").select("*").order("sort_order", { ascending: true }).order("name", { ascending: true }),
+      supabase.from("tool_aliases").select("tool_id, alias")
+    ]);
+
+    if (toolsError) throw toolsError;
+    if (aliasesError) throw aliasesError;
+
+    const aliasesByTool = new Map();
+    for (const row of aliases || []) {
+      const list = aliasesByTool.get(row.tool_id) || [];
+      list.push(row.alias);
+      aliasesByTool.set(row.tool_id, list);
+    }
+
+    const normalizedTools = (dbTools || []).map((tool) => ({
+      ...tool,
+      url: tool.url || "",
+      disabled: Boolean(tool.disabled),
+      aliases: aliasesByTool.get(tool.id) || []
+    }));
+
+    applyTools(normalizedTools, "online");
+  } catch (error) {
+    console.warn("Supabase tools query failed. Falling back to static data.", error);
+    applyTools(tools, "error");
+  }
+}
+
+loadSupabaseTools();

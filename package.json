@@ -5,10 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "vite build",
+    "check:env": "node scripts/check-env.js",
+    "build": "npm run check:env && vite build",
     "preview": "vite preview --host 127.0.0.1"
   },
   "devDependencies": {
     "vite": "^6.0.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.106.1"
   }
 }

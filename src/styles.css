@@ -232,7 +232,16 @@ input[type="search"]:focus {
   margin-bottom: 18px;
 }
 
+.section-status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .result-count,
+.backend-status,
 .status-pill {
   display: inline-flex;
   align-items: center;
@@ -247,6 +256,16 @@ input[type="search"]:focus {
   font-weight: 900;
   white-space: nowrap;
   text-transform: uppercase;
+}
+
+.backend-status[data-mode="online"] {
+  color: var(--green);
+  background: #eef7f0;
+}
+
+.backend-status[data-mode="error"] {
+  color: var(--red);
+  background: #fff0ee;
 }
 
 .tools-grid {
