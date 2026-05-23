@@ -6,7 +6,7 @@ export const tools = [
     category: "Attendance",
     type: "Online",
     status: "Live",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/absensi-karyawan"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/absensi-karyawan/index.html"
   },
   {
     id: "auto-report-progress",
@@ -15,7 +15,7 @@ export const tools = [
     category: "Reports",
     type: "Online",
     status: "Live",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/daily-report"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/daily-report/index.html"
   },
   {
     id: "survey-report",
@@ -24,7 +24,7 @@ export const tools = [
     category: "Reports",
     type: "Online",
     status: "Stable",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/survey"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/survey-report/index.html"
   },
   {
     id: "weekly-report",
@@ -33,7 +33,7 @@ export const tools = [
     category: "Reports",
     type: "Online",
     status: "Stable",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/weekly-report"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/progress-report/index.html"
   },
   {
     id: "project-database",
@@ -42,7 +42,7 @@ export const tools = [
     category: "Projects",
     type: "Local-ready",
     status: "Stable",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/proyek"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/daily-report/index.html"
   },
   {
     id: "photo-documentation",
@@ -51,7 +51,7 @@ export const tools = [
     category: "Documentation",
     type: "Local-ready",
     status: "Ready",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/proyek"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/survey-report/index.html"
   },
   {
     id: "rab-helper",
@@ -60,7 +60,7 @@ export const tools = [
     category: "Finance",
     type: "Local",
     status: "Beta",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/future-tools"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/estimator/index.html"
   },
   {
     id: "staff-task-tracker",
@@ -79,7 +79,7 @@ export const tools = [
     category: "Utilities",
     type: "Local-ready",
     status: "Ready",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/backup"
+    url: "https://ics-office-tools-deploy.vercel.app"
   },
   {
     id: "utilities",
@@ -88,6 +88,6 @@ export const tools = [
     category: "Utilities",
     type: "Local-ready",
     status: "Beta",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/future-tools"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/module-generator/index.html"
   }
 ];

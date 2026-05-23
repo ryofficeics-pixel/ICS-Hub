@@ -103,7 +103,7 @@ async function logRoutingEvent(tool) {
 function setBackendStatus(mode) {
   backendMode = mode;
   const labels = {
-    online: "Online DB",
+    online: "Supabase DB",
     static: "Static fallback",
     error: "Backend error"
   };
