@@ -1,0 +1,93 @@
+export const tools = [
+  {
+    id: "absensi-online",
+    name: "Absensi Online",
+    description: "Attendance check-in, check-out, location status, and daily presence records.",
+    category: "Attendance",
+    type: "Online",
+    status: "Live",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/absensi-karyawan"
+  },
+  {
+    id: "auto-report-progress",
+    name: "Auto Report Progress",
+    description: "Daily progress input for site activity, notes, issues, and photo documentation.",
+    category: "Reports",
+    type: "Online",
+    status: "Live",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/daily-report"
+  },
+  {
+    id: "survey-report",
+    name: "Survey Report",
+    description: "Survey documentation, field observations, sketches, photos, and export-ready reports.",
+    category: "Reports",
+    type: "Online",
+    status: "Stable",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/survey"
+  },
+  {
+    id: "weekly-report",
+    name: "Weekly Report",
+    description: "Weekly project summary by selected project, week number, and reporting period.",
+    category: "Reports",
+    type: "Online",
+    status: "Stable",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/weekly-report"
+  },
+  {
+    id: "project-database",
+    name: "Project Database",
+    description: "Central project reference for names, locations, owners, estimators, and teams.",
+    category: "Projects",
+    type: "Local-ready",
+    status: "Stable",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/proyek"
+  },
+  {
+    id: "photo-documentation",
+    name: "Photo Documentation",
+    description: "Field photo review and documentation launcher for report attachments.",
+    category: "Documentation",
+    type: "Local-ready",
+    status: "Ready",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/proyek"
+  },
+  {
+    id: "rab-helper",
+    name: "RAB Helper",
+    description: "Budget helper and estimation support for operational project costing.",
+    category: "Finance",
+    type: "Local",
+    status: "Beta",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/future-tools"
+  },
+  {
+    id: "staff-task-tracker",
+    name: "Staff Task Tracker",
+    description: "Track staff assignments, open items, and operational follow-up tasks.",
+    category: "Operations",
+    type: "Planned",
+    status: "Maintenance",
+    url: "",
+    disabled: true
+  },
+  {
+    id: "backup-restore",
+    name: "Backup Restore",
+    description: "Local data backup and restore guide for device transfer and emergency recovery.",
+    category: "Utilities",
+    type: "Local-ready",
+    status: "Ready",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/backup"
+  },
+  {
+    id: "utilities",
+    name: "Utilities",
+    description: "Small supporting tools, converters, and operational shortcuts.",
+    category: "Utilities",
+    type: "Local-ready",
+    status: "Beta",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/future-tools"
+  }
+];

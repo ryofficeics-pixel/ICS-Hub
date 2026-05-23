@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="IC Solution operational tools dashboard" />
+    <title>IC Solution Operational Tools Dashboard</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div class="brand-mark" aria-hidden="true">IC</div>
+        <div class="hero-copy">
+          <p class="eyebrow">IC Solution</p>
+          <h1>Operational Tools Dashboard</h1>
+          <p class="subtitle">A fast launcher for field reports, project tools, documentation, and utilities.</p>
+        </div>
+      </header>
+
+      <main>
+        <section class="toolbar" aria-label="Tool filters">
+          <label class="search-wrap">
+            <span>Search tools</span>
+            <input id="toolSearch" type="search" placeholder="Search by name, category, or status" autocomplete="off" />
+          </label>
+          <div class="filter-panel">
+            <p>Categories</p>
+            <div id="categoryFilters" class="filter-chips" aria-label="Category filters"></div>
+          </div>
+        </section>
+
+        <section class="recent-panel" aria-labelledby="recentTitle">
+          <div>
+            <p class="section-kicker">Recent</p>
+            <h2 id="recentTitle">Recently opened</h2>
+          </div>
+          <div id="recentTools" class="recent-list" aria-live="polite"></div>
+        </section>
+
+        <section class="tools-section" aria-labelledby="toolsTitle">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">Tools</p>
+              <h2 id="toolsTitle">Operational modules</h2>
+            </div>
+            <span id="resultCount" class="result-count"></span>
+          </div>
+          <div id="toolsGrid" class="tools-grid"></div>
+          <div id="emptyState" class="empty-state" hidden>
+            <h3>No tools found</h3>
+            <p>Try a different search term or category filter.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
