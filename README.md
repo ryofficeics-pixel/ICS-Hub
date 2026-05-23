@@ -2,6 +2,8 @@
 
 Standalone operational tools dashboard for IC Solution.
 
+Live app: https://ics-tools-hub.vercel.app
+
 This project is intentionally small: Vite, HTML, CSS, and vanilla JavaScript only. It has no backend, no auth layer, no database, and no external UI library.
 
 ## Features
