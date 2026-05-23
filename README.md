@@ -27,3 +27,7 @@ npm run build
 ## Project Scope
 
 This repository is standalone and does not modify any existing IC Solution project. Tool URLs can be adjusted in `src/tools-data.js`.
+
+## Handover
+
+See `docs/HANDOVER_AUTO_ROUTING_AGENT.md` for the central hub summary and notes for a future auto-routing agent across multiple accounts.

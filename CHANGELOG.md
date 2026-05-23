@@ -4,3 +4,4 @@
 
 - Added initial standalone IC Solution operational tools dashboard.
 - Added responsive tile grid, search, category filters, launch actions, disabled state, and recently opened tracking.
+- Added handover document for future multi-account auto-routing agent work.
