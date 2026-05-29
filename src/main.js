@@ -1,6 +1,12 @@
 import "./styles.css";
 import { tools } from "./tools-data.js";
-import { supabase } from "./lib/supabase.js";
+import { hasSupabaseEnv } from "./lib/supabaseClient.js";
+import { queueStats } from "./lib/offlineQueue.js";
+import { runSyncCycle } from "./lib/syncEngine.js";
+import { ensureUserProfile, getSession, onAuthChange, signIn, signOut } from "./services/authService.js";
+import { migrateLegacyToQueue } from "./services/localMigrationService.js";
+import { syncHandlers } from "./services/syncHandlers.js";
+import { getToolsForRole, logRoutingEvent as logRoutingEventToBackend } from "./services/toolService.js";
 
 const RECENT_KEY = "ics-tools-hub-recent";
 const searchInput = document.querySelector("#toolSearch");
@@ -10,12 +16,24 @@ const emptyState = document.querySelector("#emptyState");
 const resultCount = document.querySelector("#resultCount");
 const recentTools = document.querySelector("#recentTools");
 const backendStatus = document.querySelector("#backendStatus");
+const authShell = document.querySelector("#authShell");
+const authForm = document.querySelector("#authForm");
+const authMessage = document.querySelector("#authMessage");
+const authTitle = document.querySelector("#authTitle");
+const appContent = document.querySelector("#appContent");
+const logoutButton = document.querySelector("#logoutButton");
+const syncNowButton = document.querySelector("#syncNowButton");
+const syncStatus = document.querySelector("#syncStatus");
+const userBadge = document.querySelector("#userBadge");
 
 let activeTools = tools;
 let categories = [];
 let activeCategory = "All";
 let query = "";
 let backendMode = "static";
+let currentSession = null;
+let currentProfile = null;
+let syncing = false;
 
 function getRecentIds() {
   try {
@@ -86,15 +104,9 @@ function createToolCard(tool) {
 }
 
 async function logRoutingEvent(tool) {
-  if (!supabase || backendMode !== "online") return;
+  if (!currentSession || backendMode !== "online") return;
   try {
-    const { error } = await supabase.from("routing_events").insert({
-      tool_id: tool.id,
-      tool_name: tool.name,
-      url: tool.url,
-      user_agent: navigator.userAgent
-    });
-    if (error) throw error;
+    await logRoutingEventToBackend(tool, currentSession.user?.id);
   } catch (error) {
     console.warn("Routing event was not saved.", error);
   }
@@ -169,6 +181,109 @@ function renderRecent() {
   });
 }
 
+function setAuthMessage(message, isError = false) {
+  if (!authMessage) return;
+  authMessage.textContent = message || "";
+  authMessage.dataset.tone = isError ? "error" : "neutral";
+}
+
+function setSignedOutView() {
+  appContent.hidden = true;
+  authShell.hidden = false;
+  authTitle.textContent = "Sign In";
+  userBadge.textContent = "Signed out";
+  setSyncStatus("local only");
+  setAuthMessage("");
+}
+
+function setSignedInView(profile) {
+  appContent.hidden = false;
+  authShell.hidden = true;
+  const role = profile?.role || "viewer";
+  const email = currentSession?.user?.email || "user";
+  userBadge.textContent = `${email} (${role})`;
+}
+
+function setSyncStatus(statusText, tone = "neutral") {
+  syncStatus.textContent = statusText;
+  syncStatus.dataset.mode = tone;
+}
+
+async function refreshSyncStatus() {
+  const stats = await queueStats();
+  if (syncing) {
+    setSyncStatus(`syncing (${stats.pending} pending)`, "syncing");
+    return;
+  }
+  if (stats.failed > 0 || stats.conflict > 0) {
+    setSyncStatus(`failed ${stats.failed} | conflict ${stats.conflict}`, "error");
+    return;
+  }
+  if (stats.pending > 0) {
+    setSyncStatus(`${stats.pending} pending`, "pending");
+    return;
+  }
+  setSyncStatus("synced", "online");
+}
+
+async function syncNow() {
+  if (!currentSession) {
+    setSyncStatus("login required", "error");
+    return;
+  }
+  if (!navigator.onLine) {
+    setSyncStatus("offline", "pending");
+    return;
+  }
+  syncing = true;
+  setSyncStatus("syncing...", "syncing");
+  try {
+    await runSyncCycle(syncHandlers);
+  } catch (error) {
+    console.warn("Sync cycle failed.", error);
+  } finally {
+    syncing = false;
+    await refreshSyncStatus();
+  }
+}
+
+async function loadToolsFromBackend(role) {
+  if (!hasSupabaseEnv) {
+    applyTools(tools, "static");
+    return;
+  }
+
+  try {
+    const dbTools = await getToolsForRole(role);
+    applyTools(dbTools, "online");
+  } catch (error) {
+    console.warn("Supabase tools query failed. Falling back to static data.", error);
+    applyTools(tools, "error");
+  }
+}
+
+async function initializeAuthenticatedState(session) {
+  currentSession = session;
+  if (!session?.user) {
+    currentProfile = null;
+    setSignedOutView();
+    applyTools(tools, hasSupabaseEnv ? "error" : "static");
+    return;
+  }
+
+  try {
+    currentProfile = await ensureUserProfile(session.user);
+    setSignedInView(currentProfile);
+    await migrateLegacyToQueue(session.user.id);
+    await loadToolsFromBackend(currentProfile?.role || "viewer");
+    await syncNow();
+  } catch (error) {
+    console.error(error);
+    setSignedOutView();
+    setAuthMessage(error.message || "Failed to initialize account.", true);
+  }
+}
+
 searchInput.addEventListener("input", (event) => {
   query = event.target.value;
   renderTools();
@@ -183,40 +298,68 @@ function applyTools(nextTools, mode) {
   renderTools();
 }
 
-async function loadSupabaseTools() {
-  if (!supabase) {
+if (authForm) {
+  authForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = new FormData(authForm);
+    const email = String(form.get("email") || "").trim();
+    const password = String(form.get("password") || "");
+    setAuthMessage("Signing in...");
+    try {
+      await signIn(email, password);
+      setAuthMessage("");
+    } catch (error) {
+      setAuthMessage(error.message || "Sign in failed.", true);
+    }
+  });
+}
+
+if (logoutButton) {
+  logoutButton.addEventListener("click", async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.warn("Sign out failed.", error);
+    }
+  });
+}
+
+if (syncNowButton) {
+  syncNowButton.addEventListener("click", () => syncNow());
+}
+
+window.addEventListener("online", () => {
+  syncNow().catch((error) => console.warn("Online sync failed.", error));
+});
+
+async function bootstrap() {
+  updateCategories();
+  renderFilters();
+  renderRecent();
+  renderTools();
+
+  if (!hasSupabaseEnv) {
+    setSignedOutView();
     applyTools(tools, "static");
+    setAuthMessage("Missing Supabase env vars. Configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.", true);
     return;
   }
 
   try {
-    const [{ data: dbTools, error: toolsError }, { data: aliases, error: aliasesError }] = await Promise.all([
-      supabase.from("tools").select("*").order("sort_order", { ascending: true }).order("name", { ascending: true }),
-      supabase.from("tool_aliases").select("tool_id, alias")
-    ]);
-
-    if (toolsError) throw toolsError;
-    if (aliasesError) throw aliasesError;
-
-    const aliasesByTool = new Map();
-    for (const row of aliases || []) {
-      const list = aliasesByTool.get(row.tool_id) || [];
-      list.push(row.alias);
-      aliasesByTool.set(row.tool_id, list);
-    }
-
-    const normalizedTools = (dbTools || []).map((tool) => ({
-      ...tool,
-      url: tool.url || "",
-      disabled: Boolean(tool.disabled),
-      aliases: aliasesByTool.get(tool.id) || []
-    }));
-
-    applyTools(normalizedTools, "online");
+    const session = await getSession();
+    await initializeAuthenticatedState(session);
+    onAuthChange(async (nextSession) => {
+      await initializeAuthenticatedState(nextSession);
+    });
   } catch (error) {
-    console.warn("Supabase tools query failed. Falling back to static data.", error);
+    console.error(error);
+    setSignedOutView();
+    setAuthMessage(error.message || "Authentication bootstrap failed.", true);
     applyTools(tools, "error");
   }
 }
 
-loadSupabaseTools();
+bootstrap().catch((error) => {
+  console.error("App bootstrap failed.", error);
+  applyTools(tools, "error");
+});

@@ -7,6 +7,7 @@ create table if not exists public.tools (
   category text not null default 'Utilities',
   type text not null default 'Online',
   status text not null default 'Live',
+  required_role text check (required_role in ('super_admin', 'admin', 'supervisor', 'staff', 'viewer')),
   url text,
   disabled boolean not null default false,
   sort_order int not null default 100,
@@ -24,6 +25,7 @@ create table if not exists public.tool_aliases (
 
 create table if not exists public.routing_events (
   id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id),
   tool_id text,
   tool_name text,
   url text,
@@ -32,10 +34,12 @@ create table if not exists public.routing_events (
 );
 
 create table if not exists public.user_profiles (
-  id uuid primary key,
+  user_id uuid primary key references auth.users(id) on delete cascade,
   email text,
-  display_name text,
-  role text default 'viewer',
+  full_name text,
+  role text default 'viewer' check (role in ('super_admin', 'admin', 'supervisor', 'staff', 'viewer')),
+  is_active boolean not null default true,
+  updated_at timestamptz default now(),
   created_at timestamptz default now()
 );
 
@@ -91,4 +95,3 @@ on public.routing_events
 for insert
 to anon, authenticated
 with check (true);
-

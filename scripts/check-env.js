@@ -22,9 +22,17 @@ const required = ["VITE_SUPABASE_URL", "VITE_SUPABASE_ANON_KEY"];
 const missing = required.filter((name) => !process.env[name]);
 
 if (missing.length) {
-  console.warn("Supabase frontend env vars are missing. Build will continue with static fallback:");
-  for (const name of missing) console.warn(`- ${name}`);
-  process.exit(0);
+  console.error("Missing required frontend env vars:");
+  for (const name of missing) console.error(`- ${name}`);
+  console.error("Build aborted. Add missing values to .env.local or deployment environment.");
+  process.exit(1);
 }
 
 console.log("Supabase frontend env vars found.");
+
+const serverOptional = ["SUPABASE_SERVICE_ROLE_KEY", "CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"];
+const missingServer = serverOptional.filter((name) => !process.env[name]);
+if (missingServer.length) {
+  console.warn("Server-side env vars are missing (required for API/upload/admin scripts):");
+  for (const name of missingServer) console.warn(`- ${name}`);
+}

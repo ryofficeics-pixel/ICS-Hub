@@ -1,3 +1,8 @@
+> OBSOLETE / NON-AUTHORITATIVE  
+> This file is preserved for historical reference only.  
+> Do not use it as implementation authority.  
+> If this file conflicts with `fixed rule.md`, `fixed rule.md` wins.
+
 # Handover: IC Solution Tools Hub
 
 ## Purpose

@@ -1,24 +1,44 @@
 # Codex Resume
 
+## Rule Priority
+
+1. `fixed rule.md` is the only canonical rule source.
+2. This resume is secondary context only and cannot override `fixed rule.md`.
+3. Historical handover docs are non-authoritative references.
+
+## First Action After Resume
+
+1. Read `fixed rule.md`.
+2. Run `npm.cmd run build`.
+3. Run `npm.cmd run check:docs` (if available).
+4. Continue the requested task.
+
 ## Completed
 
 - Created standalone project folder with its own Git repository.
-- Added Vite-based HTML/CSS/vanilla JS dashboard.
-- Added required documentation files.
-- Implemented responsive Metro-inspired IC Solution tile UI.
-- Added Supabase client integration with static fallback.
-- Added SQL schema and seed files for the public tool registry.
+- Preserved existing Vite-based UI shell and routes.
+- Added Supabase Auth login/session flow and role-aware tool loading.
+- Added operational schema migration with RLS and role/project policy helpers.
+- Added Cloudinary signed upload endpoint.
+- Added IndexedDB offline queue and sync engine.
+- Added legacy localStorage migration queue process.
+- Added first-admin bootstrap script.
 
 ## Pending
 
-- Keep Supabase secrets out of frontend code.
-- Future work: optional auth-aware auto-routing agent outside this static app.
+- Apply migration SQL on the target Supabase project.
+- Configure Vercel env vars for Supabase and Cloudinary.
+- Create real users/project memberships and run first-admin bootstrap.
+- Validate full live workflow against production credentials.
 
 ## Last Known Commands
 
 ```bash
 npm install
 npm run build
+npm run check:env
+npm run check:docs
+npm run bootstrap:first-admin
 git init
 git add .
 git commit -m "Initial IC Solution tools dashboard foundation"
@@ -28,4 +48,4 @@ npm run build
 
 ## Notes
 
-This project is separate from existing IC Solution projects and should remain standalone. Supabase is used only for public tool registry reads and routing event inserts. Access control must stay in destination apps or a future secure routing layer.
+This repository now contains backend integration scaffolding (auth, RLS schema, sync, Cloudinary signing) while preserving existing launcher UI behavior.

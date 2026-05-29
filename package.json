@@ -6,8 +6,14 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "check:env": "node scripts/check-env.js",
+    "check:docs": "node scripts/check-doc-authority.js",
+    "check:portable": "node scripts/check-portability.js",
+    "bootstrap:first-admin": "node scripts/bootstrap-first-admin.js",
     "build": "npm run check:env && vite build",
     "preview": "vite preview --host 127.0.0.1"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "devDependencies": {
     "vite": "^6.0.0"

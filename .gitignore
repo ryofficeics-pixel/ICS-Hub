@@ -8,5 +8,4 @@ dist/
 *.log
 Thumbs.db
 .DS_Store
-
-.vercel
+backups/

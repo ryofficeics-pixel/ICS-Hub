@@ -6,7 +6,18 @@ export const tools = [
     category: "Attendance",
     type: "Online",
     status: "Live",
+    required_role: "staff",
     url: "https://ics-office-tools-deploy.vercel.app/tools/absensi-karyawan/index.html"
+  },
+  {
+    id: "absensi-admin",
+    name: "Absensi Admin",
+    description: "Attendance administration console for review, correction, and export operations.",
+    category: "Attendance",
+    type: "Online",
+    status: "Live",
+    required_role: "admin",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/absensi-admin/index.html"
   },
   {
     id: "auto-report-progress",
@@ -15,6 +26,7 @@ export const tools = [
     category: "Reports",
     type: "Online",
     status: "Live",
+    required_role: "staff",
     url: "https://ics-office-tools-deploy.vercel.app/tools/daily-report/index.html"
   },
   {
@@ -24,6 +36,7 @@ export const tools = [
     category: "Reports",
     type: "Online",
     status: "Stable",
+    required_role: "staff",
     url: "https://ics-office-tools-deploy.vercel.app/tools/survey-report/index.html"
   },
   {
@@ -33,6 +46,7 @@ export const tools = [
     category: "Reports",
     type: "Online",
     status: "Stable",
+    required_role: "staff",
     url: "https://ics-office-tools-deploy.vercel.app/tools/progress-report/index.html"
   },
   {
@@ -42,6 +56,7 @@ export const tools = [
     category: "Projects",
     type: "Local-ready",
     status: "Stable",
+    required_role: "supervisor",
     url: "https://ics-office-tools-deploy.vercel.app/tools/daily-report/index.html"
   },
   {
@@ -51,7 +66,18 @@ export const tools = [
     category: "Documentation",
     type: "Local-ready",
     status: "Ready",
+    required_role: "staff",
     url: "https://ics-office-tools-deploy.vercel.app/tools/survey-report/index.html"
+  },
+  {
+    id: "roi-simulator",
+    name: "ROI Simulator",
+    description: "Property and project return simulation for planning and investment review.",
+    category: "Finance",
+    type: "Online",
+    status: "Live",
+    required_role: "supervisor",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/roi-simulator/index.html"
   },
   {
     id: "rab-helper",
@@ -60,7 +86,18 @@ export const tools = [
     category: "Finance",
     type: "Local",
     status: "Beta",
+    required_role: "supervisor",
     url: "https://ics-office-tools-deploy.vercel.app/tools/estimator/index.html"
+  },
+  {
+    id: "module-generator",
+    name: "Module Generator",
+    description: "Generate and manage module templates and floor-panel tool flows.",
+    category: "Utilities",
+    type: "Online",
+    status: "Live",
+    required_role: "admin",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/module-generator/index.html"
   },
   {
     id: "staff-task-tracker",
@@ -69,6 +106,7 @@ export const tools = [
     category: "Operations",
     type: "Planned",
     status: "Maintenance",
+    required_role: "supervisor",
     url: "",
     disabled: true
   },
@@ -79,6 +117,7 @@ export const tools = [
     category: "Utilities",
     type: "Local-ready",
     status: "Ready",
+    required_role: "staff",
     url: "https://ics-office-tools-deploy.vercel.app"
   },
   {
@@ -88,6 +127,7 @@ export const tools = [
     category: "Utilities",
     type: "Local-ready",
     status: "Beta",
+    required_role: "staff",
     url: "https://ics-office-tools-deploy.vercel.app/tools/module-generator/index.html"
   }
 ];
