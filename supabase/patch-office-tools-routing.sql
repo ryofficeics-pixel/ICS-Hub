@@ -1,3 +1,6 @@
+-- Patch the live Tools Hub registry so dashboard buttons open the online
+-- ICS Office Tools routes. Run this in Supabase SQL Editor with an admin role.
+
 insert into public.tools (id, name, description, category, type, status, required_role, url, disabled, sort_order)
 values
   ('absensi-online', 'Absensi Online', 'Attendance check-in, check-out, location status, and daily presence records.', 'Attendance', 'Online', 'Live', 'staff', 'https://ics-office-tools-deploy.vercel.app/tools/absensi-karyawan', false, 10),
@@ -27,28 +30,6 @@ on conflict (id) do update set
 
 insert into public.tool_aliases (tool_id, alias)
 values
-  ('absensi-online', 'attendance'),
-  ('absensi-admin', 'attendance admin'),
-  ('absensi-admin', 'admin absensi'),
-  ('absensi-online', 'karyawan'),
-  ('absensi-online', 'check in'),
-  ('auto-report-progress', 'daily report'),
-  ('auto-report-progress', 'daily progress'),
-  ('survey-report', 'survey'),
-  ('weekly-report', 'weekly progress'),
-  ('project-database', 'proyek'),
-  ('project-database', 'database proyek'),
-  ('photo-documentation', 'foto lapangan'),
-  ('roi-simulator', 'roi'),
-  ('roi-simulator', 'investment'),
-  ('rab-helper', 'rab'),
-  ('rab-helper', 'budget'),
   ('kalkulator-pembesian', 'pembesian'),
-  ('kalkulator-pembesian', 'besi'),
-  ('module-generator', 'generator'),
-  ('module-generator', 'floor panel'),
-  ('staff-task-tracker', 'task tracker'),
-  ('backup-restore', 'backup'),
-  ('backup-restore', 'restore'),
-  ('utilities', 'tools')
+  ('kalkulator-pembesian', 'besi')
 on conflict (tool_id, alias) do nothing;

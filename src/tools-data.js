@@ -7,7 +7,7 @@ export const tools = [
     type: "Online",
     status: "Live",
     required_role: "staff",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/absensi-karyawan/index.html"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/absensi-karyawan"
   },
   {
     id: "absensi-admin",
@@ -17,7 +17,7 @@ export const tools = [
     type: "Online",
     status: "Live",
     required_role: "admin",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/absensi-admin/index.html"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/absensi-admin"
   },
   {
     id: "auto-report-progress",
@@ -27,7 +27,7 @@ export const tools = [
     type: "Online",
     status: "Live",
     required_role: "staff",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/daily-report/index.html"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/daily-report"
   },
   {
     id: "survey-report",
@@ -37,7 +37,7 @@ export const tools = [
     type: "Online",
     status: "Stable",
     required_role: "staff",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/survey-report/index.html"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/survey-report"
   },
   {
     id: "weekly-report",
@@ -47,7 +47,7 @@ export const tools = [
     type: "Online",
     status: "Stable",
     required_role: "staff",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/progress-report/index.html"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/progress-report"
   },
   {
     id: "project-database",
@@ -57,7 +57,7 @@ export const tools = [
     type: "Local-ready",
     status: "Stable",
     required_role: "supervisor",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/daily-report/index.html"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/daily-report"
   },
   {
     id: "photo-documentation",
@@ -67,27 +67,38 @@ export const tools = [
     type: "Local-ready",
     status: "Ready",
     required_role: "staff",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/survey-report/index.html"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/survey-report"
   },
   {
     id: "roi-simulator",
     name: "ROI Simulator",
     description: "Property and project return simulation for planning and investment review.",
     category: "Finance",
-    type: "Online",
-    status: "Live",
+    type: "Unavailable",
+    status: "No Route",
     required_role: "supervisor",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/roi-simulator/index.html"
+    url: "",
+    disabled: true
   },
   {
     id: "rab-helper",
     name: "RAB Helper",
     description: "Budget helper and estimation support for operational project costing.",
     category: "Finance",
-    type: "Local",
+    type: "Online",
     status: "Beta",
     required_role: "supervisor",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/estimator/index.html"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/estimator"
+  },
+  {
+    id: "kalkulator-pembesian",
+    name: "Kalkulator Pembesian",
+    description: "Concrete reinforcement calculator from the online ICS Office Tools deployment.",
+    category: "Finance",
+    type: "Online",
+    status: "Live",
+    required_role: "staff",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/kalkulator-pembesian"
   },
   {
     id: "module-generator",
@@ -97,7 +108,7 @@ export const tools = [
     type: "Online",
     status: "Live",
     required_role: "admin",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/module-generator/index.html"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/module-generator"
   },
   {
     id: "staff-task-tracker",
@@ -128,6 +139,6 @@ export const tools = [
     type: "Local-ready",
     status: "Beta",
     required_role: "staff",
-    url: "https://ics-office-tools-deploy.vercel.app/tools/module-generator/index.html"
+    url: "https://ics-office-tools-deploy.vercel.app/tools/module-generator"
   }
 ];
