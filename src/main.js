@@ -188,12 +188,13 @@ function setAuthMessage(message, isError = false) {
 }
 
 function setSignedOutView() {
-  appContent.hidden = true;
+  appContent.hidden = false;
   authShell.hidden = false;
   authTitle.textContent = "Sign In";
   userBadge.textContent = "Signed out";
   setSyncStatus("local only");
   setAuthMessage("");
+  if (logoutButton) logoutButton.hidden = true;
 }
 
 function setSignedInView(profile) {
@@ -202,6 +203,7 @@ function setSignedInView(profile) {
   const role = profile?.role || "viewer";
   const email = currentSession?.user?.email || "user";
   userBadge.textContent = `${email} (${role})`;
+  if (logoutButton) logoutButton.hidden = false;
 }
 
 function setSyncStatus(statusText, tone = "neutral") {
@@ -267,7 +269,7 @@ async function initializeAuthenticatedState(session) {
   if (!session?.user) {
     currentProfile = null;
     setSignedOutView();
-    applyTools(tools, hasSupabaseEnv ? "error" : "static");
+    await loadToolsFromBackend("super_admin");
     return;
   }
 
