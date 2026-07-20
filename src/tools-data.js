@@ -140,7 +140,7 @@ export const tools = [
     status: "Beta",
     required_role: "staff",
     url: "https://ics-office-tools-deploy.vercel.app/tools/module-generator"
-  }
+  },
   {
     id: "dtmp-daily-report",
     name: "DTMP Daily Report",
