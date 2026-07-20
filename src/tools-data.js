@@ -141,4 +141,14 @@ export const tools = [
     required_role: "staff",
     url: "https://ics-office-tools-deploy.vercel.app/tools/module-generator"
   }
+  {
+    id: "dtmp-daily-report",
+    name: "DTMP Daily Report",
+    description: "Daily progress report with materials, equipment tracking, and voice input for CV Daya Tjipta Mitra Persada.",
+    category: "Reports",
+    type: "Online",
+    status: "Live",
+    required_role: "staff",
+    url: "https://ics-office-tools-deploy.vercel.app/tools/dtmp-daily-report"
+  }
 ];

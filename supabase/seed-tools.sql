@@ -13,7 +13,8 @@ values
   ('module-generator', 'Module Generator', 'Generate and manage module templates and floor-panel tool flows.', 'Utilities', 'Online', 'Live', 'admin', 'https://ics-office-tools-deploy.vercel.app/tools/module-generator', false, 75),
   ('staff-task-tracker', 'Staff Task Tracker', 'Track staff assignments, open items, and operational follow-up tasks.', 'Operations', 'Planned', 'Maintenance', 'supervisor', '', true, 80),
   ('backup-restore', 'Backup Restore', 'Local data backup and restore guide for device transfer and emergency recovery.', 'Utilities', 'Local-ready', 'Ready', 'staff', 'https://ics-office-tools-deploy.vercel.app', false, 90),
-  ('utilities', 'Utilities', 'Small supporting tools, converters, and operational shortcuts.', 'Utilities', 'Local-ready', 'Beta', 'staff', 'https://ics-office-tools-deploy.vercel.app/tools/module-generator', false, 100)
+  ('utilities', 'Utilities', 'Small supporting tools, converters, and operational shortcuts.', 'Utilities', 'Local-ready', 'Beta', 'staff', 'https://ics-office-tools-deploy.vercel.app/tools/module-generator', false, 100),
+  ('dtmp-daily-report', 'DTMP Daily Report', 'Daily progress report with materials, equipment tracking, and voice input for CV Daya Tjipta Mitra Persada.', 'Reports', 'Online', 'Live', 'staff', 'https://ics-office-tools-deploy.vercel.app/tools/dtmp-daily-report', false, 110)
 on conflict (id) do update set
   name = excluded.name,
   description = excluded.description,
@@ -50,5 +51,8 @@ values
   ('staff-task-tracker', 'task tracker'),
   ('backup-restore', 'backup'),
   ('backup-restore', 'restore'),
-  ('utilities', 'tools')
+  ('utilities', 'tools'),
+  ('dtmp-daily-report', 'dtmp'),
+  ('dtmp-daily-report', 'daya tjipta'),
+  ('dtmp-daily-report', 'mitra persada')
 on conflict (tool_id, alias) do nothing;
